@@ -86,6 +86,143 @@
         echo 'のび太くんが0点以外をとった！';
     }
 
+    // if文を使ってサイコロプログラムを作る
+    echo '<br>';
+    $number = 10; // 1 ~ 6の数字が入る
+    if ($number == 1) {
+        echo 'サイコロの目は1です';
+    } elseif ($number == 2) {
+        echo 'サイコロの目は2です';
+    } elseif ($number == 3) {
+        echo 'サイコロの目は3です';
+    } elseif ($number == 4) {
+        echo 'サイコロの目は4です';
+    } elseif ($number == 5) {
+        echo 'サイコロの目は5です';
+    } elseif ($number == 6) {
+        echo 'サイコロの目は6です';
+    } else {
+        echo 'サイコロの目の規定外です';
+    }
+
+    // switch文
+    echo '<br>';
+    switch ($number) {
+        case 1:
+            echo 'サイコロの目は1です (switch)';
+            break;
+
+        case 2:
+            echo 'サイコロの目は2です (switch)';
+            break;
+
+        case 3:
+            echo 'サイコロの目は3です (switch)';
+            break;
+
+        case 4:
+            echo 'サイコロの目は4です (switch)';
+            break;
+
+        case 5:
+            echo 'サイコロの目は5です (switch)';
+            break;
+
+        case 6:
+            echo 'サイコロの目は6です (switch)';
+            break;
+
+        default:
+            echo 'サイコロの目の規定外です (switch)';
+            break;
+    }
+
+    // 繰り返し文
+
+    // while文
+    echo '<br>';
+    echo '<br>';
+    echo '<br>';
+    $num = 1;
+    while ($num <= 6) {
+        echo 'サイコロの目は' . $num . 'です';
+        echo '<br>';
+        // $num = $num + 1; // 自己代入
+        $num++;
+    }
+
+    // for文
+    echo '<br>';
+    echo '<br>';
+    for ($i=1; $i <= 6; $i++) {
+        echo 'サイコロの目は' . $i . 'です';
+        echo '<br>';
+    }
+
+    // 配列
+    // $配列名 = array(値1, 値2, 値3 ...);
+    $members = array('Yo', 'Kiyo', 'Yusuke', 'Yukino', 'kazu');
+    //                 0       1         2         3
+    // 0から始まるIndexという数字が各データにふられる
+
+    // $配列名[Index]で各データを呼び出す
+    echo $members[0];
+    echo '<br>';
+    echo $members[1];
+    echo '<br>';
+    echo $members[2];
+    echo '<br>';
+    echo $members[3];
+    echo '<br>';
+
+    // echo $members; // エラーになる(echoは1データしか扱えない)
+    echo '<pre>';
+    var_dump($members);
+    echo '</pre>';
+
+    $hoge = 'ほげ';
+    echo '<br>';
+    var_dump($hoge);
+
+    echo '<br>';
+    // 配列と繰り返し
+    echo count($members); // count関数 (配列のデータ数を数える機能)
+    $i = 0; // 初期化
+    $count = count($members); // 繰り返しの上限(配列数)
+    echo 'すべての友達 : ' . $count;
+    echo '<br>';
+    while ($i < $count) {
+        $num = $i+1;
+        echo 'Member' . $num . ' : ' . $members[$i];
+        echo '<br>';
+        $i++;
+    }
+
+    // 連想配列
+    // $連想配列 = array(キー1 => 値1, キー2 => 値2 ...);
+    $langs = array('Web' => 'PHP', 'iOS' => 'Swift', 'Android' => 'Java');
+
+    // $連想配列[キー];で呼び出し
+    echo $langs['Web'];
+    echo '<br>';
+    echo $langs['iOS'];
+    echo '<br>';
+    echo $langs['Android'];
+    echo '<br>';
+
+    // 多次元配列
+    //// 配列の中にまた配列がデータとして入っている
+    $friend1 = array('name' => 'Kiyo', 'age' => '22');
+    $friend2 = array('name' => 'Yusuke', 'age' => '22');
+    $friend3 = array('name' => 'Yukino', 'age' => '23');
+
+    $friends = array($friend1, $friend2, $friend3);
+
+    echo '<br>';
+    echo $friends[0]['name'];
+    echo '<br>';
+    echo $friends[0]['age'];
+    //   $配列[Index][key];
  ?>
 
 
