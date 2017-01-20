@@ -82,6 +82,7 @@
     // echo $record['area_name'];
     // echo '<br>';
 
+    $count = count($areas);
  ?>
 
 <!DOCTYPE html>
@@ -91,12 +92,17 @@
     <title></title>
 </head>
 <body>
+    <?php for ($i=0; $i < $count; $i++) : ?>
+        <!-- 繰り返し表示したいHTML書き放題 -->
+        <?php echo $areas[$i]['area_id']; ?> : <a href="show.php?area_id=<?php echo $areas[$i]['area_id']; ?>"><?php echo $areas[$i]['area_name']; ?></a>
+        <br>
+    <?php endfor; ?>
+
     <?php
-        $count = count($areas);
-        for ($i=0; $i < $count; $i++) {
-            echo $areas[$i]['area_name'];
-            echo '<br>';
-        }
+        // for ($i=0; $i < $count; $i++) {
+        //     echo $areas[$i]['area_name'];
+        //     echo '<br>';
+        // }
      ?>
 
 </body>
