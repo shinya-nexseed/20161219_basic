@@ -17,7 +17,7 @@
     // データベースから情報を取得
     $dsn = 'mysql:dbname=myfriends;host=localhost';
     $user = 'root';
-    $password = '';
+    $password = 'mysql';
     $dbh = new PDO($dsn, $user, $password);
     $dbh->query('SET NAMES utf8');
 
@@ -40,6 +40,7 @@
   <title></title>
 </head>
 <body>
+  <a href="new.php">新規友達データを登録</a><br>
   <?php echo $record['area_name']; ?> の友達
 </body>
 </html>
