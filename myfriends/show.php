@@ -12,7 +12,7 @@
     echo '<br>';
 
     // ページデータ取得用の$id変数を用意
-    $id = $_GET['area_id'];
+    $id = $_GET['area_id'];  // 1などのidデータ
 
     // データベースから情報を取得
     $dsn = 'mysql:dbname=myfriends;host=localhost';
@@ -31,6 +31,18 @@
     $record = $stmt->fetch(PDO::FETCH_ASSOC); // array型
     // $record = array('area_id' => '1', 'area_name' => '北海道');
 
+    // area_idが一致する友達データ全件取得
+    $sql = 'SELECT * FROM `friends` WHERE `area_id`=' . $id;
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute(); // object型
+    $friends = array();
+    while (1) {
+        $record = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($record == false) {
+            break;
+        }
+        $friends[] = $record;
+    }
  ?>
 
 <!DOCTYPE html>
@@ -42,6 +54,10 @@
 <body>
   <a href="new.php">新規友達データを登録</a><br>
   <?php echo $record['area_name']; ?> の友達
+  <br>
+  <?php foreach($friends as $friend): ?>
+    <?php echo $friend['friend_name']; ?><br>
+  <?php endforeach; ?>
 </body>
 </html>
 

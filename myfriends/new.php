@@ -26,6 +26,50 @@
     // もし登録ボタンが押されたら if(!empty($_POST)) {}
         // $_POSTが使用可能に (これをvar_dumpしてみる)
         // $_POSTを使ってINSERT文を作り実行
+
+    // empty()関数
+    // ()の中に指定した変数もしくは配列などの中身が空っぽかどうかを判定する
+    // 空っぽだったらtrueを返す
+    // 例) $hoge = '';
+    echo '毎回実行される処理A';
+    var_dump($_POST);
+    if (!empty($_POST)) {
+        // POST送信されたときのみ処理される
+        echo 'POST送信されたときのみ実行される処理B';
+        // CRUD処理のCreate : INSERT文を実行してDBに登録する処理
+        var_dump($_POST);
+        echo $_POST['name']; // DBのカラム名と一致してなくてもよい
+        echo '<br>';
+        echo $_POST['gender'];
+        echo '<br>';
+        echo $_POST['area_id'];
+        echo '<br>';
+        echo $_POST['age'];
+        echo '<br>';
+
+        // INSERT文作成
+        // 構文 : INSERT INTO `テーブル名` (`カラム1`, `カラム2`, `カラム3`) VALUES (値1, 値2, 値3);
+
+        // INSERT INTO `friends` (`friend_name`, `area_id`, `gender`, `age`, `created`) VALUES ("ほげ", 1, 1, 26, 2017/01/25)
+        $sql = 'INSERT INTO `friends` (`friend_name`, `area_id`, `gender`, `age`, `created`) VALUES (?, ?, ?, ?, NOW())';
+        // ?に入れるための配列を用意
+        $data = array($_POST['name'], $_POST['area_id'], $_POST['gender'], $_POST['age']);
+
+        // 実行 (登録)
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute($data);
+
+        // header()は指定したURLへ遷移する処理
+        header('Location: index.php');
+    }
+
+    // formタグmethod="POST" → $_POSTを生成する
+    // 各入力タグのnameに指定された文字列をキーに、
+    // ユーザーがフォーム画面で入力した内容を値に、
+    // 連想配列の形式で生成される
+
+
+
  ?>
 
 <!DOCTYPE html>
@@ -37,8 +81,9 @@
 <body>
   <h1>友達の登録</h1>
   <form method="POST" action="new.php">
+  <!-- actionは空だと自分自身をさす -->
     名前<br>
-    <input type="text" name="friend_name" placeholder="例: 山田 太郎">
+    <input type="text" name="name" placeholder="例: 山田 太郎">
     <br>
 
     性別<br>
@@ -53,7 +98,7 @@
     <select name="area_id">
       <option value="0">出身地を選択</option>
       <?php foreach($areas as $area) : ?>
-        <option value="1"><?php echo $area['area_name']; ?></option>
+        <option value="<?php echo $area['area_id']; ?>"><?php echo $area['area_name']; ?></option>
 
       <?php endforeach; ?>
     </select>
