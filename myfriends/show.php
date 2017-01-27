@@ -58,7 +58,8 @@
   <?php echo $area_record['area_name']; ?> の友達
   <br>
   <?php foreach($friends as $friend): ?>
-    <?php echo $friend['friend_name']; ?> <span class="edit">[<a href="">編集</a>]</span> <br>
+    <?php echo $friend['friend_name']; ?>
+    <span class="edit">[<a href="edit.php?friend_id=<?php echo $friend['friend_id']; ?>">編集</a>]</span> <br>
   <?php endforeach; ?>
 </body>
 </html>

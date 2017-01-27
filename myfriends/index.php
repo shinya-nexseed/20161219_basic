@@ -1,5 +1,5 @@
 <?php
-    echo 'Hello myfriends!';
+    // echo 'Hello myfriends!';
 
     // CRUD処理のR - データの取得・表示
 
@@ -37,9 +37,9 @@
     // Delete : DELETE : 削除
 
     // 3. 取得データの加工
-    echo '<pre>';
-    var_dump($stmt);
-    echo '</pre>';
+    // echo '<pre>';
+    // var_dump($stmt);
+    // echo '</pre>';
     // // object型 → array型
     // $record = $stmt->fetch(PDO::FETCH_ASSOC);
     // // $record = array('area_id' => '1', 'area_name' => '北海道');
