@@ -25,6 +25,14 @@
 
         $stmt = $dbh->prepare($sql);
         $stmt->execute($data);
+
+        $area_id = $_POST['area_id'];
+        // show.phpへ遷移するプログラム
+        // URLにある最後のスラッシュから後を指定したパスで書き換える
+        header('Location: show.php?area_id=' . $area_id);
+        // exit()が読み込まれると、そこでプログラムの処理を停止する
+        // exit('エラーコード : 00101');
+        exit();
     }
 
     // Create : 作成 : INSERT

@@ -30,6 +30,21 @@ a {
   color: #008000;
 }
 
+/* delete用スタイル */
+.delete a:hover {
+  color: #666666;
+  font-size: 16px;
+}
+
+.delete {
+  color: #FF0000;
+  font-size: 10px;
+}
+
+.delete a {
+  color: #FF0000;
+}
+
 
 
 

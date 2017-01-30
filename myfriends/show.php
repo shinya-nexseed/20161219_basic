@@ -22,6 +22,16 @@
     $dbh = new PDO($dsn, $user, $password);
     $dbh->query('SET NAMES utf8');
 
+    // 削除処理
+    // もし削除リンクが押され、パラメータにaction=deleteが存在すれば処理
+    if (!empty($_GET['action']) && $_GET['action'] == 'delete') {
+        // DELETE FROM `テーブル名` WHERE `カラム名` = 値
+        $sql = 'DELETE FROM `friends` WHERE `friend_id` = ' . $_GET['friend_id'];
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute();
+    }
+
+
     $sql = 'SELECT * FROM `areas` WHERE `area_id`=' . $id;
     // echo $sql;
     // echo '<br>';
@@ -59,7 +69,9 @@
   <br>
   <?php foreach($friends as $friend): ?>
     <?php echo $friend['friend_name']; ?>
-    <span class="edit">[<a href="edit.php?friend_id=<?php echo $friend['friend_id']; ?>">編集</a>]</span> <br>
+    <span class="edit">[<a href="edit.php?friend_id=<?php echo $friend['friend_id']; ?>">編集</a>]</span>
+    <span class="delete">[<a href="show.php?action=delete&friend_id=<?php echo $friend['friend_id']; ?>&area_id=<?php echo $area_record['area_id']; ?>">削除</a>]</span>
+    <br>
   <?php endforeach; ?>
 </body>
 </html>
