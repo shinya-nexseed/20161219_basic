@@ -1,4 +1,12 @@
 <?php
+    // $_SESSIONを使用可能にするための関数
+    session_start();
+
+    // SESSIONとは、サーバー内に用意された簡易データベースのようなもの
+    // Key Value Store (KVS) の形式で、データを保存しておける
+    // ブラウザとサーバーの接続が切れるまでそのデータを保存し続ける
+    // 一度保存したデータは、存在する限りどのファイル上でも使用が可能
+
 
     // 各入力値を保持する変数を用意
     $nick_name = '';
@@ -38,9 +46,35 @@
         // 一つ目のキーにはinputタグのnameオプションの値をセットする。
         // 二つ目には予め定義されているキーをセットし情報を取得する。
         // 今回の場合、選択された画像の名前を取得したいので、二つ目のキーにはnameをセットした (PHPが予め決めているキー)
+        if (!empty($fileName)) {
+            $ext = substr($fileName, -3);
+            // substrは指定した文字列から指定した箇所から後の文字のみ取得する
+            if ($ext != 'jpg' && $ext != 'png' && $ext != 'gif') {
+                $error['picture_path'] = 'type';
+            }
+        }
 
         // エラーがなかったとき
         if (empty($error)) {
+            // 画像をサーバー (CentOS) へアップロードする
+            $picture_path = date('YmdHis') . $_FILES['picture_path']['name'];
+            move_uploaded_file($_FILES['picture_path']['tmp_name'], '../member_picture/' . $picture_path);
+            // move_uploaded_fileはブラウザからサーバーへファイルデータをアップロードするためのPHPの関数 (機能)
+            // ()の中には、一つ目にファイルデータを、二つ目に保存先と保存する際のファイル名を指定する
+
+            // Unixコマンドでフォルダの権限を変更する
+            // chown ユーザー:グループ パス
+            // chown apache:apache member_picture
+
+
+            // セッションに値を保存する (check.phpにPOST送信データを引き継ぐ)
+            $_SESSION['join'] = $_POST;
+            $_SESSION['join']['picture_path'] = $picture_path;
+            // $_SESSION['join'] = array('nick_name' => 'hoge',
+            //                           'email' => 'hoge@gmail.com',
+            //                           'password' => 'hogehoge',
+            //                           'picture_path' => '201702031010shinya.jpg');
+
             // 確認画面へ遷移
             header('Location: check.php');
             exit();
@@ -94,6 +128,12 @@
     <div>
       <label>プロフィール画像</label><br>
       <input type="file" name="picture_path">
+      <?php if(isset($error['picture_path']) && $error['picture_path'] == 'type'): ?>
+        <p style="color: red;">プロフィール画像の拡張子は「jpg」「png」「gif」のデータを指定してください</p>
+      <?php endif; ?>
+      <?php if(!empty($error)): ?>
+        <p style="color: red;">画像を再度指定してください</p>
+      <?php endif; ?>
     </div>
 
     <input type="submit" value="確認画面へ">
