@@ -23,14 +23,29 @@
 
         try{
             // Create : INSERT
-            $sql = 'INSERT INTO `members`
-            (`nick_name`, `email` `password`, `picture_path`, `created`) VALUES
-            ("Shinya", "shinya@gmail.com", "hogehoge", "shinya.jpg", NOW())';
+            // $sql = 'INSERT INTO `members`
+            // (`nick_name`, `email` `password`, `picture_path`, `created`) VALUES
+            // ("Shinya", "shinya@gmail.com", "hogehoge", "shinya.jpg", NOW())';
+
+            $sql = 'INSERT INTO `members` SET `nick_name`=?,
+                                              `email`=?,
+                                              `password`=?,
+                                              `picture_path`=?,
+                                              `created`=NOW()';
+
+            $data = array($_SESSION['join']['nick_name'],
+                          $_SESSION['join']['email'],
+                          sha1($_SESSION['join']['password']),
+                          $_SESSION['join']['picture_path']
+                          );
             $stmt = $dbh->prepare($sql);
-            $stmt->execute();
+            $stmt->execute($data);
+
+            header('Location: thanks.php');
+            exit();
         }catch(PDOException $e){
             echo 'SQL実行時エラー: '. $e->getMessage();
-            exit;
+            exit();
         }
 
     }
@@ -52,7 +67,9 @@
   <br>
 
   【パスワード】<br>
-  ●●●●●●●●
+  ●●●●●●●●<br>
+  <?php echo $_SESSION['join']['password']; ?>
+  <?php echo sha1($_SESSION['join']['password']); ?>
   <br>
 
   【プロフィール画像】<br>
