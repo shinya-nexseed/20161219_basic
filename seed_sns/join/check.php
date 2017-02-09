@@ -79,6 +79,7 @@
   <!-- 登録ボタン -->
   <form method="POST" action="check.php">
     <input type="hidden" name="hoge" value="fuga">
+    <a href="index.php?action=rewrite">&laquo;&nbsp;書き直す</a> |
     <input type="submit" value="会員登録">
     <!--
       $_POST = array();

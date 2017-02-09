@@ -29,6 +29,10 @@
 // アスタリスク * → ワイルドカード = 全部
 // SELECT カラム1, カラム2 FROM `テーブル`
 // SELECT t.*, m.nick_name, m.picture_path FROM `tweets` AS t, `members` AS m WHERE m.member_id = t.member_id ORDER BY t.created DESC
+
+// COUNT()関数
+// 取得したデータの件数を返してくれる
+// SELECT COUNT(*) FROM `テーブル`
 ?>
 
 

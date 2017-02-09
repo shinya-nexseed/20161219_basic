@@ -73,7 +73,13 @@ $stmt->execute();
   </form>
 
   <?php while($tweet = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
-    id : <?php echo $tweet['tweet_id']; ?> - <img src="member_picture/<?php echo $tweet['picture_path']; ?>" style="width: 16px;"><?php echo $tweet['tweet']; ?> <span style="font-size: 14px; color: #808080;"><?php echo $tweet['created']; ?> (<?php echo $tweet['nick_name']; ?>)</span><br>
+    id : <?php echo $tweet['tweet_id']; ?> -
+    <img src="member_picture/<?php echo $tweet['picture_path']; ?>" style="width: 16px;"><?php echo $tweet['tweet']; ?>
+    <span style="font-size: 14px; color: #808080;"><?php echo $tweet['created']; ?> (<?php echo $tweet['nick_name']; ?>)</span>
+    <?php if($tweet['member_id'] == $_SESSION['id']): ?>
+        <a href="" style="color: red; text-decoration: none;">[削除]</a>
+    <?php endif; ?>
+    <br>
   <?php endwhile; ?>
 
 </body>

@@ -1,6 +1,7 @@
 <?php
     // $_SESSIONを使用可能にするための関数
     session_start();
+    require('../dbconnect.php');
 
     // SESSIONとは、サーバー内に用意された簡易データベースのようなもの
     // Key Value Store (KVS) の形式で、データを保存しておける
@@ -54,6 +55,21 @@
             }
         }
 
+        // メール重複チェック (DBとの比較)
+        if (empty($error)) {
+            $sql = 'SELECT COUNT(*) AS `cnt` FROM `members` WHERE `email`=?';
+            $data = array($email);
+            $stmt = $dbh->prepare($sql);
+            $stmt->execute($data);
+
+            $record = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($record['cnt'] > 0) {
+                // メール重複
+                $error['email'] = 'duplicate';
+            }
+        }
+
         // エラーがなかったとき
         if (empty($error)) {
             // 画像をサーバー (CentOS) へアップロードする
@@ -81,6 +97,15 @@
         }
     }
 
+    // 書き直し処理
+    if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'rewrite') {
+        $nick_name = $_SESSION['join']['nick_name'];
+        $email = $_SESSION['join']['email'];
+        $error['rewrite'] = 'rewrite';
+    }
+    // $_REQUESTスーパーグローバル変数
+    // $_GET、$_POST、$_COOKIEの情報を含むスーパーグローバル変数
+    // $_REQUEST == $_GET
  ?>
 
 <!DOCTYPE html>
@@ -109,6 +134,10 @@
       <input type="email" name="email" placeholder="例: seed@next.com" value="<?php echo $email; ?>">
       <?php if(isset($error['email']) && $error['email'] == 'blank'): ?>
         <p style="color: red;">メールアドレスを入力してください</p>
+      <?php endif; ?>
+
+      <?php if(isset($error['email']) && $error['email'] == 'duplicate'): ?>
+        <p style="color: red;">指定したメールアドレスは既に登録されています</p>
       <?php endif; ?>
     </div>
 
