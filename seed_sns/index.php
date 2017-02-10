@@ -34,8 +34,9 @@ if (!empty($_POST)) {
         // tweetsテーブルに投稿データを登録 : Create - INSERT
         $sql = 'INSERT INTO `tweets` SET `tweet`=?,
                                           `member_id`=?,
+                                          `reply_tweet_id`=?,
                                           `created`=NOW()';
-        $data = array($_POST['tweet'], $_SESSION['id']);
+        $data = array($_POST['tweet'], $_SESSION['id'], $_POST['reply_tweet_id']);
 
         $stmt = $dbh->prepare($sql);
         $stmt->execute($data);
@@ -50,6 +51,18 @@ if (!empty($_POST)) {
 $sql = 'SELECT t.*, m.nick_name, m.picture_path FROM `tweets` AS t, `members` AS m WHERE m.member_id = t.member_id ORDER BY t.created DESC';
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
+
+// 返信機能
+$re_tweet ='';
+if (isset($_REQUEST['res'])) {
+    $sql = 'SELECT t.*, m.nick_name, m.picture_path FROM `tweets` AS t LEFT JOIN `members` AS m ON m.member_id = t.member_id WHERE t.tweet_id = ?';
+    $data = array($_REQUEST['res']);
+    $re_stmt = $dbh->prepare($sql);
+    $re_stmt->execute($data);
+
+    $tweet = $re_stmt->fetch(PDO::FETCH_ASSOC);
+    $re_tweet = '@' . $tweet['nick_name'] . ' - ' . $tweet['tweet'];
+}
 
 ?>
 
@@ -67,7 +80,10 @@ $stmt->execute();
 
   <form method="POST" action="index.php">
     <div>
-      <textarea name="tweet" placeholder="つぶやき" cols="50" rows="5"></textarea>
+      <textarea name="tweet" placeholder="つぶやき" cols="50" rows="5"><?php echo $re_tweet; ?></textarea>
+      <?php if(isset($_REQUEST['res'])): ?>
+        <input type="hidden" name="reply_tweet_id" value="<?php echo $_REQUEST['res']; ?>">
+      <?php endif; ?>
     </div>
     <input type="submit" value="ツイート">
   </form>
@@ -75,9 +91,10 @@ $stmt->execute();
   <?php while($tweet = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
     id : <?php echo $tweet['tweet_id']; ?> -
     <img src="member_picture/<?php echo $tweet['picture_path']; ?>" style="width: 16px;"><?php echo $tweet['tweet']; ?>
+    <a href="index.php?res=<?php echo $tweet['tweet_id']; ?>" style="color: #66CCFF; text-decoration: none;">[Re]</a>
     <span style="font-size: 14px; color: #808080;"><?php echo $tweet['created']; ?> (<?php echo $tweet['nick_name']; ?>)</span>
     <?php if($tweet['member_id'] == $_SESSION['id']): ?>
-        <a href="" style="color: red; text-decoration: none;">[削除]</a>
+        <a href="delete.php?tweet_id=<?php echo $tweet['tweet_id']; ?>" style="color: red; text-decoration: none;">[削除]</a>
     <?php endif; ?>
     <br>
   <?php endwhile; ?>
