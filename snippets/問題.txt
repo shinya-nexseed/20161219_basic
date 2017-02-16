@@ -1,0 +1,97 @@
+【実践課題】
+
+課題名 : スニペット登録アプリ作成
+
+myfriendsシステムと同じ構成で開発できる、スニペット登録アプリを作成。
+学習した中で使える！と思ったコードとコメントを一緒に登録できる。
+カテゴリがいくつかあり、各カテゴリにスニペット情報を登録していく。
+
+スニペットとは
+コードの断片という意味の単語で、システム開発をする中でコードのいち部分を切り取って使いまわせるようにしておくプログラムのこと
+
+①セットアップ
+1. snippetsフォルダ作成
+2. snippetsDB作成
+3. categoriesテーブル作成
+--- category_id (int, primary, AI)
+--- category_name (varchar, 255)
+
+4. snippetsテーブル作成
+--- snippet_id (int, primary, AI)
+--- snippet_name (varchar, 255)
+--- category_id (int)
+--- content (text)
+--- comment (text)
+--- created (datetime)
+--- modified (timestamp)
+
+②カテゴリー一覧表示画面 (index.php)
+1. DB接続
+2. カテゴリー情報取得
+3. HTMLコード作成
+4. カテゴリーデータ表示
+
+③カテゴリーごと詳細画面 (show.php)
+1. パラメータから選択カテゴリーid取得
+2. DB接続
+3. カテゴリーデータ一件取得
+4. カテゴリーに紐づくスニペットデータ全件取得
+5. HTMLコード作成
+6. カテゴリー名表示
+7. スニペット一覧表示
+※ URLにパラメータ必須 (index.phpからリンククリック時)
+
+④スニペット登録画面 (new.php)
+1. HTMLコード作成 (フォーム)
+2. DB接続
+3. カテゴリーデータ全件取得
+4. HTMLのselectタグでカテゴリー選択できるよう繰り返し表示
+5. POST送信判定 (ボタンが押されたときのみ実行されるif文)
+6. snippet情報をデータベースへ登録
+7. snippetが登録されたカテゴリの詳細ページ(show.php)へ遷移
+
+⑤スニペット編集画面 (edit.php)
+1. カテゴリ詳細ページの各snippetに編集リンク設置
+2. 編集リンククリック後編集ページへパラメータつきで遷移
+3. DB接続
+4. snippet情報一件取得
+5. カテゴリ情報全件取得
+6. HTMLコード作成
+7. フォームにsnippetの情報を表示
+8. HTMLのselectタグでカテゴリー選択できるよう繰り返し表示
+9. POST送信判定 (ボタンが押されたときのみ実行されるif文)
+10. 編集されたsnippet情報をデータベースへ登録
+11. snippetが登録されたカテゴリの詳細ページ(show.php)へ遷移
+
+⑥スニペット削除機能
+1. カテゴリ詳細ページの各snippetに削除リンク設置
+2. 削除リンククリック後再度showページへパラメータつきで遷移
+3. 削除送信判定 (削除パラメータが存在するときのみ実行されるif文)
+4. 削除処理
+
+⑦スニペットの詳細画面 (snippet_show.php)
+1. カテゴリ詳細ページの各スニペットタイトルにリンク設置
+2. リンククリック後、パラメータつきでsnippet_show.phpへ遷移
+3. DB接続
+4. スニペットデータ一件取得
+5. スニペット名、スニペット本文、コメント、作成日を画面に出力
+6. スニペット本文をaceエディタで加工
+
+ACEエディタ実装方法
+http://qiita.com/shin1kt/items/48ed9c5d3d485757d19b
+
+※ Githubからダウンロードしたace-builds-masterフォルダの中のsrcフォルダが必要
+こちらのフォルダをsnippetsフォルダに置き、HTMLファイルにてscriptタグで読み込むことで実装可能となる。
+
+Aceおすすめ設定
+
+<script>
+  var editor = ace.edit("editor");
+  editor.setTheme("ace/theme/monokai");
+  editor.setFontSize(14);
+  editor.setReadOnly(true);
+  editor.getSession().setMode("ace/mode/php");
+  editor.getSession().setUseWrapMode(true);
+  editor.getSession().setTabSize(2);
+</script>
+

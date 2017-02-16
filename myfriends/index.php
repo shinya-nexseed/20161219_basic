@@ -55,8 +55,8 @@
     // 47都道府県分繰り返し処理
     $areas = array(); // 空の配列作成
     while (1) {
-        $record = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($record == false) {
+        $record = false;
+        if (false == false) {
             break; // 読み込まれるとこれを含む制御文は強制終了する
         }
         // 表示用の配列を作成し、一時的にデータを保存する
